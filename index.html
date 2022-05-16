@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<head>
+    <style>
+        button {
+            float: left
+        }
+
+        line {
+            stroke: #ddd;
+        }
+
+        text {
+            text-anchor: middle;
+        }
+
+        circle {
+            fill: orange;
+            stroke: orange;
+            fill-opacity: 0.5;
+        }
+
+        .axis line {
+            fill: none;
+            stroke: #ddd;
+            shape-rendering: crispEdges;
+        }
+
+        .axis path {
+            fill: none;
+        }
+
+        .axis text {
+            font-size: 0.7em;
+            fill: #555;
+            font-family: sans-serif
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+
+
+        //create main svg element
+        const svg = d3.select("body").append("svg")
+            .attr("width", "100%")
+            .attr("height", "600px");
+
+        const width = svg.style("width").replace("px", "")
+        const height = svg.style("height").replace("px", "")
+
+        const random = (min, max) => { // min and max included 
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
+        const genData = () => {
+            return [
+                { x: random(0, width / 2), y: random(0, width / 2) },
+                { x: random(0, width / 2), y: random(0, width / 2) },
+                { x: random(width / 2, width), y: random(0, width / 2) },
+                { x: random(width / 2, width), y: random(0, width / 2) },
+            ]
+        }
+
+        const svgGroup = svg.append("g")
+
+        const cData = genData()
+        //create basic circles
+        svgGroup
+            .selectAll("circle")
+            .data(cData)
+            .enter()
+            .append("circle")
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", d => 40);
+
+
+        svgGroup
+            .selectAll("line")
+            .data([
+                [cData[0], cData[2]],
+                [cData[1], cData[3]],
+            ])
+            .enter()
+            .append("line")
+            .attr("x1", d => d[0].x)
+            .attr("x2", d => d[1].x)
+            .attr("y1", d => d[0].y)
+            .attr("y2", d => d[1].y)
+            .style("stroke", "black")
+            .attr("stroke-width", 2)
+
+        //button to swap over datasets
+        d3.select("body")
+            .append("button")
+            .text("change data")
+            .on("click", function () {
+
+                const newData = genData()
+
+                //rejoin data
+                const circle = svg.select("g")
+                    .selectAll("circle")
+                    .data(newData);
+
+                circle.exit().remove();//remove unneeded circles
+                circle.enter().append("circle")
+                    .attr("r", 0);//create any new circles needed
+
+                //update all circles to new positions
+                circle.transition()
+                    .duration(2000)
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y)
+                    .attr("r", d => 40);
+
+
+                const lines = svg.select("g")
+                    .selectAll("line")
+                    .data([
+                        [newData[0], newData[2]],
+                        [newData[1], newData[3]],
+                    ])
+
+                lines.exit().remove();
+                lines.enter().append("line")
+                lines.transition()
+                    .duration(2000)
+                    .attr("x1", d => d[0].x)
+                    .attr("x2", d => d[1].x)
+                    .attr("y1", d => d[0].y)
+                    .attr("y2", d => d[1].y)
+
+
+            });//end click function
+
+
+
+
+    </script>
+</body>
+
+</html>
