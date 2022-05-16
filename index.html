@@ -57,12 +57,13 @@
             return Math.floor(Math.random() * (max - min + 1) + min)
         }
 
+        const padding = 50
         const genData = () => {
             return [
-                { x: random(0, width / 2), y: random(0, width / 2) },
-                { x: random(0, width / 2), y: random(0, width / 2) },
-                { x: random(width / 2, width), y: random(0, width / 2) },
-                { x: random(width / 2, width), y: random(0, width / 2) },
+                { x: random(0 + padding, width / 2), y: random(0 + padding, height / 2) },
+                { x: random(0 + padding, width / 2), y: random(0 + padding, height / 2) },
+                { x: random(width / 2, width - padding), y: random(0 + padding, height / 2) },
+                { x: random(width / 2, width - padding), y: random(0 + padding, height / 2) },
             ]
         }
 
@@ -101,8 +102,8 @@
 
                 const randomIndex = random(0, 3);
                 //change one property 
-                cData[randomIndex].x = random(0, width)
-                cData[randomIndex].y = random(0, height)
+                cData[randomIndex].x = random(0 + padding, width - padding)
+                cData[randomIndex].y = random(0 + padding, height - padding)
 
 
                 //rejoin data
