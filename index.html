@@ -8,7 +8,7 @@
         }
 
         line {
-            stroke: rgb(128, 128, 128);
+            stroke: #563d7c;
             stroke-width: 2px;
         }
 
@@ -17,8 +17,8 @@
         }
 
         circle {
-            fill: orange;
-            stroke: orange;
+            fill: #563d7c;
+            stroke: #563d7c;
             fill-opacity: 0.5;
         }
 
@@ -43,8 +43,11 @@
 
 <body>
 
-    <script>
 
+    <button id="change">Change One Location</button>
+
+    <script>
+        const changeButton = document.getElementById("change")
         //create main svg element
         const svg = d3.select("body").append("svg")
             .attr("width", "100%")
@@ -94,52 +97,48 @@
             .attr("y1", d => d[0].y)
             .attr("y2", d => d[1].y)
 
-        //button to swap over datasets
-        d3.select("body")
-            .append("button")
-            .text("change data")
-            .on("click", function () {
-
-                const randomIndex = random(0, 3);
-                //change one property 
-                cData[randomIndex].x = random(0 + padding, width - padding)
-                cData[randomIndex].y = random(0 + padding, height - padding)
+        const changeLocation = () => {
+            const randomIndex = random(0, 3);
+            //change one property 
+            cData[randomIndex].x = random(0 + padding, width - padding)
+            cData[randomIndex].y = random(0 + padding, height - padding)
 
 
-                //rejoin data
-                const circle = svg.select("g")
-                    .selectAll("circle")
-                    .data(cData);
+            //rejoin data
+            const circle = svg.select("g")
+                .selectAll("circle")
+                .data(cData);
 
-                circle.exit().remove();//remove unneeded circles
-                circle.enter().append("circle")
-                    .attr("r", 0);//create any new circles needed
+            circle.exit().remove();//remove unneeded circles
+            circle.enter().append("circle")
+                .attr("r", 0);//create any new circles needed
 
-                //update all circles to new positions
-                circle.transition()
-                    .duration(2000)
-                    .attr("cx", d => d.x)
-                    .attr("cy", d => d.y)
-                    .attr("r", d => 40);
+            //update all circles to new positions
+            circle.transition()
+                .duration(2000)
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("r", d => 40);
 
 
-                const lines = svg.select("g")
-                    .selectAll("line")
-                    .data([
-                        [cData[0], cData[2]],
-                        [cData[1], cData[3]],
-                    ])
+            const lines = svg.select("g")
+                .selectAll("line")
+                .data([
+                    [cData[0], cData[2]],
+                    [cData[1], cData[3]],
+                ])
 
-                lines.exit().remove();
-                lines.enter().append("line")
-                lines.transition()
-                    .duration(2000)
-                    .attr("x1", d => d[0].x)
-                    .attr("x2", d => d[1].x)
-                    .attr("y1", d => d[0].y)
-                    .attr("y2", d => d[1].y)
+            lines.exit().remove();
+            lines.enter().append("line")
+            lines.transition()
+                .duration(2000)
+                .attr("x1", d => d[0].x)
+                .attr("x2", d => d[1].x)
+                .attr("y1", d => d[0].y)
+                .attr("y2", d => d[1].y)
+        }
 
-            });//end click function
+        changeButton.addEventListener("click", changeLocation)
 
 
 
