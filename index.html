@@ -44,7 +44,6 @@
 
     <script>
 
-
         //create main svg element
         const svg = d3.select("body").append("svg")
             .attr("width", "100%")
@@ -101,12 +100,16 @@
             .text("change data")
             .on("click", function () {
 
-                const newData = genData()
+                const randomIndex = random(0, 3);
+                //change one property 
+                cData[randomIndex].x = random(0, width)
+                cData[randomIndex].y = random(0, height)
+
 
                 //rejoin data
                 const circle = svg.select("g")
                     .selectAll("circle")
-                    .data(newData);
+                    .data(cData);
 
                 circle.exit().remove();//remove unneeded circles
                 circle.enter().append("circle")
@@ -123,8 +126,8 @@
                 const lines = svg.select("g")
                     .selectAll("line")
                     .data([
-                        [newData[0], newData[2]],
-                        [newData[1], newData[3]],
+                        [cData[0], cData[2]],
+                        [cData[1], cData[3]],
                     ])
 
                 lines.exit().remove();
@@ -135,7 +138,6 @@
                     .attr("x2", d => d[1].x)
                     .attr("y1", d => d[0].y)
                     .attr("y2", d => d[1].y)
-
 
             });//end click function
 
