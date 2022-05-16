@@ -8,7 +8,8 @@
         }
 
         line {
-            stroke: #ddd;
+            stroke: rgb(128, 128, 128);
+            stroke-width: 2px;
         }
 
         text {
@@ -91,8 +92,6 @@
             .attr("x2", d => d[1].x)
             .attr("y1", d => d[0].y)
             .attr("y2", d => d[1].y)
-            .style("stroke", "black")
-            .attr("stroke-width", 2)
 
         //button to swap over datasets
         d3.select("body")
